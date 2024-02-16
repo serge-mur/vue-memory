@@ -1,4 +1,5 @@
 <script setup>
+
 import { reactive, ref, watch } from 'vue'
 
 const preDeck = reactive([
