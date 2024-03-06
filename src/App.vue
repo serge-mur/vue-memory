@@ -22,10 +22,13 @@ const clickedCard = reactive([])
 
 const isWin = ref(false)
 
+const clickDisable = ref(false)
+
 const clickCard = (index) => {
 	deck[index].state = true
 	clickedCard.push(deck[index])
 	if (clickedCard.length == 2) {
+		clickDisable.value = true
 		setTimeout(() => {
 			if (clickedCard[0].name !== clickedCard[1].name) {
 				clickedCard[0].state = false
@@ -33,7 +36,8 @@ const clickCard = (index) => {
 			}
 			clickedCard.length = 0
 			isWin.value = deck.every((elem) => elem.state == true)
-		}, 500)
+			clickDisable.value = false
+		}, 2000)
 	}
 }
 
@@ -48,7 +52,7 @@ watch(isWin, () => {
 		<h1 class="title">Memory Game</h1>
 		<div class="deck" v-if="!isWin">
 			<div class="card" :class="{ open: card.state }" v-for="(card, index) in deck" :key="index"
-				@click="!card.state ? clickCard(index) : null">
+				@click="!card.state && clickDisable == false ? clickCard(index) : null">
 
 				<div class="card-inner">
 					<div class="card-front"></div>
