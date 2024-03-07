@@ -2,7 +2,7 @@
 
 import { reactive, ref, watch } from 'vue'
 
-const preDeck = reactive([
+const preDeck = [
 	{ name: '1', image: '../src/assets/icons/apple-svgrepo-com.svg', state: false },
 	{ name: '2', image: '../src/assets/icons/beer-svgrepo-com.svg', state: false },
 	{ name: '3', image: '../src/assets/icons/pizza-svgrepo-com.svg', state: false },
@@ -10,25 +10,21 @@ const preDeck = reactive([
 	{ name: '5', image: '../src/assets/icons/hot-dog-svgrepo-com.svg', state: false },
 	{ name: '6', image: '../src/assets/icons/hawthorn-svgrepo-com.svg', state: false },
 
-])
+]
 
-const tmp = JSON.parse(JSON.stringify(preDeck))
-
-const deck = preDeck.concat(tmp)
-
-deck.sort(() => 0.5 - Math.random())
+const deck = reactive(preDeck.concat(JSON.parse(JSON.stringify(preDeck))).sort(() => 0.5 - Math.random()))
 
 const clickedCard = reactive([])
 
 const isWin = ref(false)
 
-const clickDisable = ref(false)
+let clickDisable = false
 
 const clickCard = (index) => {
 	deck[index].state = true
 	clickedCard.push(deck[index])
 	if (clickedCard.length == 2) {
-		clickDisable.value = true
+		clickDisable = true
 		setTimeout(() => {
 			if (clickedCard[0].name !== clickedCard[1].name) {
 				clickedCard[0].state = false
@@ -36,7 +32,7 @@ const clickCard = (index) => {
 			}
 			clickedCard.length = 0
 			isWin.value = deck.every((elem) => elem.state == true)
-			clickDisable.value = false
+			clickDisable = false
 		}, 2000)
 	}
 }
@@ -69,9 +65,6 @@ watch(isWin, () => {
 				<button type="button" @click="isWin = false">Try again?</button>
 			</div>
 
-		</div>
-		<div style="display: none;">
-			{{ clickedCard }}
 		</div>
 
 	</div>
@@ -174,4 +167,5 @@ watch(isWin, () => {
 	background-image: linear-gradient(45deg, rgba(0, 0, 0, 0) 48%, rgba(255, 255, 255, 0.3) 50%, rgba(0, 0, 0, 0) 52%), linear-gradient(-45deg, rgba(0, 0, 0, 0) 48%, rgba(255, 255, 255, 0.3) 50%, rgba(0, 0, 0, 0) 52%);
 	background-size: 1em 1em;
 	background-color: #ccc;
-}</style>
+}
+</style>
