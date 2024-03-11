@@ -1,9 +1,9 @@
 <script setup>
 
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import Card from '@/components/Card.vue'
 
-const emit = defineEmits(['allCardOpen'])
+const emit = defineEmits(['allCardOpen', 'countEvent'])
 
 const preDeck = [
 	{ name: '1', image: '../src/assets/icons/apple-svgrepo-com.svg', state: false },
@@ -30,6 +30,7 @@ const clickCard = (index) => {
 			if (clickedCard[0].name !== clickedCard[1].name) {
 				clickedCard[0].state = false
 				clickedCard[1].state = false
+				emit('countEvent')
 			}
 			clickedCard.length = 0
 			clickDisable = false
@@ -37,6 +38,7 @@ const clickCard = (index) => {
 		}, 2000)
 	}
 }
+
 
 const isWin = () => {
 	if (deck.every((elem) => elem.state == true)) {

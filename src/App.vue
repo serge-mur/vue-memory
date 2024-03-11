@@ -2,17 +2,23 @@
 
 import { ref } from 'vue'
 import Deck from '@/components/Deck.vue'
+import Counter from '@/components/Counter.vue'
 
 const isWin = ref(false)
+
+const count = ref(0)
 
 </script>
 
 <template>
 	<div class="wrapper">
 		<h1 class="title">Memory Game</h1>
+		<div>
+			<Counter :count="count" />
+		</div>
 		<div v-if="!isWin">
 
-			<Deck @allCardOpen="(val) => isWin = val" />
+			<Deck @countEvent="count++" @allCardOpen="(val) => isWin = val" />
 
 		</div>
 		<div v-else>
